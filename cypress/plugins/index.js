@@ -12,7 +12,7 @@
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
 const fs = require("fs");
-const { compile: compileFile } = require("../../src/compile");
+const { exec: execFile } = require("../../src/exec");
 
 /**
  * @type {Cypress.PluginConfig}
@@ -29,7 +29,7 @@ module.exports = (on, config) => {
       return true;
     },
     compile({ filePath, outputPath }) {
-      return compileFile(filePath, outputPath);
+      return execFile(filePath, outputPath);
     },
   });
 };
