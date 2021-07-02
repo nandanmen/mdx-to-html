@@ -38,3 +38,14 @@ Yay everything works!
 Future updates:
 
 - Split bundle based on what's being used by that particular page
+
+---
+
+Next up:
+
+- Add stylesheets
+- Add tests
+- Typescript??
+- Code splitting
+- No JS bundles for pure markdown files
+- Support for rendering React components to HTML
