@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "out"
+    "outDir": "out",
+    "types": ["cypress", "node"]
   }
 }

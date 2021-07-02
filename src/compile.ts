@@ -14,4 +14,5 @@ export async function compile(path: string, outputPath: string) {
     [`${file.name}.html`]: html,
     [`${file.name}.js`]: script,
   });
+  return true;
 }
