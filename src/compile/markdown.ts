@@ -5,24 +5,20 @@ import { build } from "esbuild";
 import { getMDXComponent } from "mdx-bundler/client";
 import { renderToString } from "react-dom/server";
 
-import type { File } from "./index";
-import type { FilePath } from "./path";
+import type { File } from "../file";
 import { createDirectory } from "../directory";
 
-export function parseMarkdownFile(path: FilePath): File {
-  return {
-    name: path.name,
-    async compile(source: string) {
-      const result = await bundleMDX(source, {
-        cwd: join(process.cwd(), path.workingDir),
-      });
+export async function compileMarkdown(file: File) {
+  const { name, workingDir } = file.path;
 
-      const script = await createClientBundle(path.name, result);
-      const html = createHTMLPage(path.name, result);
+  const result = await bundleMDX(file.contents, {
+    cwd: join(process.cwd(), workingDir),
+  });
 
-      return { script, html };
-    },
-  };
+  const script = await createClientBundle(name, result);
+  const html = createHTMLPage(name, result);
+
+  return { script, html };
 }
 
 // --

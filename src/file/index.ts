@@ -1,18 +1,28 @@
+import * as fs from "fs/promises";
+
 import { parsePath } from "./path";
-import { parseMarkdownFile } from "./markdown";
+import type { FilePath } from "./path";
 
 export type File = {
-  name: string;
-  compile(source: string): Promise<{ html: string; script: Uint8Array }>;
+  path: FilePath;
+  contents: string;
 };
 
-export function parseFile(path: string): File {
+export type FileDriver = {
+  readFile: (path: string) => Promise<string>;
+};
+
+const DEFAULT_DRIVER: FileDriver = {
+  readFile: (path) => fs.readFile(path).then((contents) => contents.toString()),
+};
+
+export async function parseFile(
+  path: string,
+  driver: FileDriver = DEFAULT_DRIVER
+): Promise<File> {
   const filePath = parsePath(path);
-  switch (filePath.extension) {
-    case "md":
-    case "mdx":
-      return parseMarkdownFile(filePath);
-    default:
-      throw new Error(`Unknown file extension: ${filePath.extension}`);
-  }
+  return {
+    path: filePath,
+    contents: await driver.readFile(path),
+  };
 }
